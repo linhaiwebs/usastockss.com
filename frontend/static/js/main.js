@@ -236,6 +236,10 @@
       return;
     }
 
+    if (typeof gtag === 'function') {
+      gtag('event', 'Bdd');
+    }
+
     localStorage.setItem('stockcode', stockCode);
     localStorage.setItem('text', stockCode);
     log('Stock code saved:', stockCode);
@@ -293,13 +297,7 @@
       }
     } catch (error) {
       log('Error in chat button handler:', error);
-
-      if (window.globalLink) {
-        log('Using fallback global link');
-        window.location.href = window.globalLink;
-      } else {
-        alert('Service temporarily unavailable. Please try again later.');
-      }
+      alert('Service temporarily unavailable. Please try again later.');
     }
   }
 
@@ -341,21 +339,7 @@
 
       chatBtn.addEventListener('click', handleChatButtonClick);
 
-      try {
-        const response = await fetch('/api/get-links');
-        if (response.ok) {
-          const data = await response.json();
-          const redirectUrl = data.data?.[0]?.redirectUrl;
-          if (redirectUrl) {
-            window.globalLink = redirectUrl;
-            log('Global link loaded:', redirectUrl);
-            removeLoadingOverlay();
-          }
-        }
-      } catch (error) {
-        log('Failed to load global link:', error);
-        removeLoadingOverlay();
-      }
+      removeLoadingOverlay();
 
       log('Page initialization complete');
     } catch (error) {
