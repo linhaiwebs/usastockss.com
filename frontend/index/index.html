@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eiwjg - ESG 绩效数据追踪 | 責任投資、量化未来</title>
+    <meta name="description" content="ESG（環境・社会・ガバナンス）データの包括的な追跡と分析。責任ある投資のための定量的なインサイトを提供します。" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --earth-green: #4A7C59;
+        --soft-green: #6B9B7F;
+        --light-green: #A8D5BA;
+        --earth-brown: #8B7355;
+        --warm-beige: #F5F1E8;
+        --cream: #FDFBF7;
+        --dark-text: #2C3E2F;
+        --medium-text: #5A6C5D;
+        --light-border: #D4E3D6;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+        line-height: 1.7;
+        color: var(--dark-text);
+        background: var(--cream);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(253, 251, 247, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--light-border);
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      header.scrolled {
+        box-shadow: 0 2px 20px rgba(74, 124, 89, 0.08);
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--earth-green);
+        text-decoration: none;
+        transition: transform 0.3s ease;
+      }
+
+      .logo:hover {
+        transform: translateY(-2px);
+      }
+
+      .logo svg {
+        width: 36px;
+        height: 36px;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+      }
+
+      .nav-links a {
+        color: var(--medium-text);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        position: relative;
+      }
+
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--soft-green);
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover {
+        color: var(--earth-green);
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      .hero {
+        margin-top: 80px;
+        padding: 100px 0;
+        background: linear-gradient(135deg, var(--warm-beige) 0%, var(--cream) 100%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(168, 213, 186, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+      }
+
+      .hero-text h1 {
+        font-size: 56px;
+        line-height: 1.2;
+        color: var(--earth-green);
+        margin-bottom: 24px;
+        font-weight: 800;
+      }
+
+      .hero-tagline {
+        font-size: 24px;
+        color: var(--earth-brown);
+        margin-bottom: 32px;
+        font-weight: 500;
+      }
+
+      .hero-description {
+        font-size: 18px;
+        color: var(--medium-text);
+        margin-bottom: 40px;
+        line-height: 1.8;
+      }
+
+      .cta-button {
+        display: inline-block;
+        padding: 16px 40px;
+        background: var(--earth-green);
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(74, 124, 89, 0.2);
+      }
+
+      .cta-button:hover {
+        background: var(--soft-green);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 30px rgba(74, 124, 89, 0.3);
+      }
+
+      .hero-visual {
+        position: relative;
+        height: 400px;
+        background: linear-gradient(135deg, var(--light-green) 0%, var(--soft-green) 100%);
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 20px 60px rgba(74, 124, 89, 0.15);
+      }
+
+      .hero-visual svg {
+        width: 200px;
+        height: 200px;
+        color: white;
+        opacity: 0.9;
+      }
+
+      section {
+        padding: 100px 0;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 70px;
+      }
+
+      .section-title {
+        font-size: 42px;
+        color: var(--earth-green);
+        margin-bottom: 16px;
+        font-weight: 700;
+      }
+
+      .section-subtitle {
+        font-size: 18px;
+        color: var(--medium-text);
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+      }
+
+      .service-card {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        border: 2px solid var(--light-border);
+        transition: all 0.3s ease;
+      }
+
+      .service-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 40px rgba(74, 124, 89, 0.12);
+        border-color: var(--soft-green);
+      }
+
+      .service-icon {
+        width: 64px;
+        height: 64px;
+        background: var(--light-green);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+      }
+
+      .service-icon svg {
+        width: 32px;
+        height: 32px;
+        color: var(--earth-green);
+      }
+
+      .service-card h3 {
+        font-size: 24px;
+        color: var(--earth-green);
+        margin-bottom: 16px;
+        font-weight: 600;
+      }
+
+      .service-card p {
+        color: var(--medium-text);
+        line-height: 1.8;
+      }
+
+      .methodology {
+        background: var(--warm-beige);
+      }
+
+      .methodology-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+      }
+
+      .esg-pillars {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .pillar {
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        border-left: 4px solid var(--soft-green);
+        transition: all 0.3s ease;
+      }
+
+      .pillar:hover {
+        transform: translateX(8px);
+        box-shadow: 0 8px 30px rgba(74, 124, 89, 0.1);
+      }
+
+      .pillar h4 {
+        font-size: 20px;
+        color: var(--earth-green);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .pillar-badge {
+        width: 32px;
+        height: 32px;
+        background: var(--light-green);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: var(--earth-green);
+      }
+
+      .methodology-visual {
+        background: linear-gradient(135deg, var(--earth-green) 0%, var(--soft-green) 100%);
+        padding: 50px;
+        border-radius: 24px;
+        color: white;
+        box-shadow: 0 20px 60px rgba(74, 124, 89, 0.2);
+      }
+
+      .methodology-visual h4 {
+        font-size: 24px;
+        margin-bottom: 24px;
+      }
+
+      .methodology-visual ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .methodology-visual li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 16px;
+      }
+
+      .methodology-visual li::before {
+        content: '✓';
+        width: 24px;
+        height: 24px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .data-sources {
+        background: white;
+      }
+
+      .sources-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+        margin-bottom: 60px;
+      }
+
+      .source-item {
+        text-align: center;
+        padding: 40px 30px;
+        background: var(--warm-beige);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+      }
+
+      .source-item:hover {
+        transform: translateY(-4px);
+        background: var(--light-green);
+      }
+
+      .source-item svg {
+        width: 48px;
+        height: 48px;
+        color: var(--earth-green);
+        margin-bottom: 20px;
+      }
+
+      .source-item h4 {
+        font-size: 18px;
+        color: var(--earth-green);
+        margin-bottom: 8px;
+      }
+
+      .source-item p {
+        color: var(--medium-text);
+        font-size: 14px;
+      }
+
+      .transparency-box {
+        background: linear-gradient(135deg, var(--light-green) 0%, var(--soft-green) 100%);
+        padding: 50px;
+        border-radius: 24px;
+        text-align: center;
+        color: white;
+      }
+
+      .transparency-box h3 {
+        font-size: 32px;
+        margin-bottom: 20px;
+      }
+
+      .transparency-box p {
+        font-size: 18px;
+        opacity: 0.95;
+      }
+
+      .about {
+        background: var(--warm-beige);
+      }
+
+      .about-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+      }
+
+      .about-text h3 {
+        font-size: 32px;
+        color: var(--earth-green);
+        margin-bottom: 24px;
+      }
+
+      .about-text p {
+        color: var(--medium-text);
+        margin-bottom: 20px;
+        font-size: 16px;
+      }
+
+      .company-info {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        border: 2px solid var(--light-border);
+      }
+
+      .company-info h4 {
+        font-size: 24px;
+        color: var(--earth-green);
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid var(--light-border);
+      }
+
+      .info-item {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 20px;
+        align-items: flex-start;
+      }
+
+      .info-item svg {
+        width: 20px;
+        height: 20px;
+        color: var(--soft-green);
+        flex-shrink: 0;
+        margin-top: 4px;
+      }
+
+      .info-item div {
+        flex: 1;
+      }
+
+      .info-label {
+        font-weight: 600;
+        color: var(--earth-green);
+        margin-bottom: 4px;
+      }
+
+      .info-value {
+        color: var(--medium-text);
+        line-height: 1.6;
+      }
+
+      footer {
+        background: var(--dark-text);
+        color: rgba(255, 255, 255, 0.8);
+        padding: 60px 0 30px;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 60px;
+        margin-bottom: 50px;
+      }
+
+      .footer-brand h3 {
+        color: white;
+        font-size: 28px;
+        margin-bottom: 16px;
+      }
+
+      .footer-brand p {
+        line-height: 1.8;
+        font-size: 14px;
+      }
+
+      .footer-column h4 {
+        color: white;
+        font-size: 18px;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+
+      .footer-links {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: color 0.3s ease;
+        font-size: 14px;
+      }
+
+      .footer-links a:hover {
+        color: var(--light-green);
+      }
+
+      .footer-bottom {
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+        font-size: 14px;
+      }
+
+      .footer-bottom p {
+        margin-bottom: 12px;
+      }
+
+      @media (max-width: 968px) {
+        .nav-links {
+          display: none;
+        }
+
+        .hero-content,
+        .methodology-content,
+        .about-content {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+
+        .services-grid,
+        .sources-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-content {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+
+        .hero-text h1 {
+          font-size: 40px;
+        }
+
+        .hero-tagline {
+          font-size: 20px;
+        }
+
+        section {
+          padding: 60px 0;
+        }
+      }
+
+      .scroll-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: var(--earth-green);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(74, 124, 89, 0.3);
+        z-index: 999;
+      }
+
+      .scroll-top.visible {
+        opacity: 1;
+      }
+
+      .scroll-top:hover {
+        background: var(--soft-green);
+        transform: translateY(-4px);
+      }
+
+      .scroll-top svg {
+        width: 24px;
+        height: 24px;
+        color: white;
+      }
+    </style>
+    <meta property="og:image" content="https://bolt.new/static/og_default.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
+</head>
+  <body>
+    <header id="header">
+      <div class="container">
+        <nav>
+          <a href="#" class="logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+            eiwjg
+          </a>
+          <ul class="nav-links">
+            <li><a href="#services">サービス</a></li>
+            <li><a href="#methodology">方法論</a></li>
+            <li><a href="#data">データ</a></li>
+            <li><a href="#about">会社情報</a></li>
+            <li><a href="#contact">お問い合わせ</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1>ESG 绩效数据追踪</h1>
+            <p class="hero-tagline">責任投資、量化未来</p>
+            <p class="hero-description">
+              環境・社会・ガバナンスの包括的なデータ分析により、持続可能な投資判断をサポート。透明性の高いESG評価で、責任ある投資の未来を築きます。
+            </p>
+            <a href="#contact" class="cta-button">無料相談を始める</a>
+          </div>
+          <div class="hero-visual">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">サービス概览</h2>
+          <p class="section-subtitle">
+            企業の持続可能性を多角的に評価し、投資判断に必要な包括的なインサイトを提供します
+          </p>
+        </div>
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+              </svg>
+            </div>
+            <h3>ESG指標評分</h3>
+            <p>
+              環境、社会、ガバナンスの各要素を詳細に分析し、定量的なスコアリングを実施。業界基準に基づいた客観的な評価を提供します。
+            </p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <path d="M9 3v18"/>
+                <path d="M9 9h12"/>
+              </svg>
+            </div>
+            <h3>行業対比分析</h3>
+            <p>
+              同業他社とのベンチマーク比較により、相対的な競争力を明確化。業界内でのポジショニングと改善領域を特定します。
+            </p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v8"/>
+                <path d="M8 12h8"/>
+              </svg>
+            </div>
+            <h3>負面事件筛选</h3>
+            <p>
+              コンプライアンス違反、環境事故、労働問題など、ESGに関連する負の事象をリアルタイムで監視し、リスク管理をサポートします。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="methodology" class="methodology">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">技術方法論</h2>
+          <p class="section-subtitle">
+            環境（E）、社会（S）、治理（G）因素の加重評分モデルによる科学的なアプローチ
+          </p>
+        </div>
+        <div class="methodology-content">
+          <div class="esg-pillars">
+            <div class="pillar">
+              <h4>
+                <span class="pillar-badge">E</span>
+                環境 (Environment)
+              </h4>
+              <p>
+                気候変動対策、資源効率、廃棄物管理、生物多様性保全など、環境への影響を総合的に評価します。
+              </p>
+            </div>
+            <div class="pillar">
+              <h4>
+                <span class="pillar-badge">S</span>
+                社会 (Social)
+              </h4>
+              <p>
+                労働環境、人権尊重、地域社会との関係、製品安全性など、社会的責任の履行状況を分析します。
+              </p>
+            </div>
+            <div class="pillar">
+              <h4>
+                <span class="pillar-badge">G</span>
+                ガバナンス (Governance)
+              </h4>
+              <p>
+                企業統治、取締役会の構成、コンプライアンス、株主権利の保護など、経営の透明性と健全性を評価します。
+              </p>
+            </div>
+          </div>
+          <div class="methodology-visual">
+            <h4>加重評価フレームワーク</h4>
+            <ul>
+              <li>業界特性に応じた動的な重み付け</li>
+              <li>150以上の詳細指標による多面的評価</li>
+              <li>定量データと定性分析の統合</li>
+              <li>時系列トレンド分析機能</li>
+              <li>国際基準（GRI、SASB、TCFD）準拠</li>
+              <li>機械学習による予測モデル</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="data" class="data-sources">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">データ支撑</h2>
+          <p class="section-subtitle">
+            権威ESG評級機構データ、企業年報、CSR報告から得られる信頼性の高い情報基盤
+          </p>
+        </div>
+        <div class="sources-grid">
+          <div class="source-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            <h4>企業年報</h4>
+            <p>上場企業の公式財務報告と非財務情報</p>
+          </div>
+          <div class="source-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <h4>CSR報告</h4>
+            <p>企業の社会的責任に関する詳細なレポート</p>
+          </div>
+          <div class="source-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <h4>評価機関データ</h4>
+            <p>MSCI、Sustainalytics等の専門機関データ</p>
+          </div>
+        </div>
+        <div class="transparency-box">
+          <h3>評分透明性</h3>
+          <p>
+            詳細展示各項 ESG 指標の権重和評分ロジック。すべての評価プロセスと計算式を完全に開示し、
+            投資家の皆様が自信を持って意思決定できる環境を提供します。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">会社情報</h2>
+        </div>
+        <div class="about-content">
+          <div class="about-text">
+            <h3>持続可能な未来への貢献</h3>
+            <p>
+              eiwjgは、ESGデータ分析のリーディングカンパニーとして、投資家と企業の架け橋となることを使命としています。
+            </p>
+            <p>
+              私たちは、透明性の高いデータ分析と科学的な評価手法により、責任ある投資の普及を推進し、
+              持続可能な社会の実現に貢献します。
+            </p>
+            <p>
+              すべてのサービスは、Google広告ポリシーおよび日本の金融規制に完全に準拠しており、
+              お客様に安心してご利用いただける環境を整えています。
+            </p>
+          </div>
+          <div class="company-info">
+            <h4>企業資料</h4>
+            <div class="info-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              <div>
+                <div class="info-label">会社名</div>
+                <div class="info-value">株式会社リンクウェーブ（LinkWave Inc.）</div>
+              </div>
+            </div>
+            <div class="info-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <div>
+                <div class="info-label">所在地</div>
+                <div class="info-value">東京都渋谷区渋谷2丁目21-1<br>渋谷ヒカリエ 20階</div>
+              </div>
+            </div>
+            <div class="info-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <div>
+                <div class="info-label">電話</div>
+                <div class="info-value">03-6821-4570</div>
+              </div>
+            </div>
+            <div class="info-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <div>
+                <div class="info-label">メール</div>
+                <div class="info-value">support@eiwjg.jp</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer id="contact">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <h3>eiwjg</h3>
+            <p>
+              ESGデータ分析を通じて、持続可能な投資の未来を創造します。
+              透明性、信頼性、専門性を基盤に、お客様の責任ある投資判断をサポートします。
+            </p>
+          </div>
+          <div class="footer-column">
+            <h4>サービス</h4>
+            <ul class="footer-links">
+              <li><a href="#services">ESG指標評分</a></li>
+              <li><a href="#services">行業対比分析</a></li>
+              <li><a href="#services">負面事件筛选</a></li>
+              <li><a href="#methodology">評価方法論</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>企業情報</h4>
+            <ul class="footer-links">
+              <li><a href="#about">会社概要</a></li>
+              <li><a href="#contact">お問い合わせ</a></li>
+              <li><a href="/privacy.html">プライバシーポリシー</a></li>
+              <li><a href="/terms.html">利用規約</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>法的情報</h4>
+            <ul class="footer-links">
+              <li><a href="/legal.html">特定商取引法に基づく表記</a></li>
+              <li><a href="#about">コンプライアンス</a></li>
+              <li><a href="#about">セキュリティ</a></li>
+              <li><a href="/terms.html#disclaimer">免責事項</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>株式会社リンクウェーブ（LinkWave Inc.）</p>
+          <p>東京都渋谷区渋谷2丁目21-1 渋谷ヒカリエ 20階 | TEL: 03-6821-4570</p>
+          <p>&copy; 2024 eiwjg. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <div class="scroll-top" id="scrollTop">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="18 15 12 9 6 15"/>
+      </svg>
+    </div>
+
+    <script>
+      const header = document.getElementById('header');
+      const scrollTop = document.getElementById('scrollTop');
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+          header.classList.add('scrolled');
+          scrollTop.classList.add('visible');
+        } else {
+          header.classList.remove('scrolled');
+          scrollTop.classList.remove('visible');
+        }
+      });
+
+      scrollTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
