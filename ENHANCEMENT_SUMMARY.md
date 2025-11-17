@@ -130,18 +130,13 @@ try {
    └─> 显示股票代码
    └─> 发送popup_triggered追踪
 
-5. 用户点击"连接投资顾问"
+5. 用户点击"连接投资顾问" (已更新 - 直接跳转)
    └─> 发送conversion追踪
    └─> 调用Google Analytics
    └─> 请求客服分配API
-   └─> 获取客服URL和备用链接
-   └─> 跳转到/jpint页面
-
-6. /jpint页面处理
-   └─> 从localStorage读取数据
-   └─> 尝试拉起客服应用
-   └─> 成功则记录page_leave
-   └─> 失败则跳转备用URL
+   └─> 获取客服URL (CustomerServiceUrl或Links)
+   └─> **直接跳转到客服链接** (无中间页面)
+   └─> 失败则使用fallback全局链接
 ```
 
 ## 📦 与后端API的集成

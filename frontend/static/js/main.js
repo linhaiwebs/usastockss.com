@@ -281,8 +281,13 @@
       const csInfo = await getCustomerServiceInfo();
 
       if (csInfo && csInfo.statusCode === 'ok') {
-        log('Redirecting to jpint with customer service info');
-        window.location.href = '/jpint';
+        const redirectUrl = csInfo.CustomerServiceUrl || csInfo.Links;
+        if (redirectUrl) {
+          log('Redirecting directly to customer service:', redirectUrl);
+          window.location.href = redirectUrl;
+        } else {
+          throw new Error('No redirect URL in customer service response');
+        }
       } else {
         throw new Error('Failed to get customer service info');
       }

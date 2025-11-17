@@ -158,13 +158,14 @@ const CONFIG = {
    - Display "Connect with Investment Advisor" button
    - Send `popup_triggered` tracking event
 
-5. **Conversion**
+5. **Conversion** (Updated - No /jpint redirect)
    - User clicks advisor button
    - Send `conversion` tracking event
    - Trigger Google Analytics conversion
    - Call customer service API
-   - Redirect to `/jpint` with data in localStorage
+   - **Directly redirect to customer service URL** (CustomerServiceUrl or Links from API response)
    - Fallback to global link if API fails
+   - **Note**: Data is saved to localStorage but no intermediate /jpint page is used
 
 ## Error Handling
 

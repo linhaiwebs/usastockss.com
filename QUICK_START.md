@@ -96,18 +96,18 @@ location.reload();
 [StockAnalysis] Analysis completed for: AAPL
 ```
 
-#### 5️⃣ 测试客服连接
+#### 5️⃣ 测试客服连接 (已更新 - 直接跳转)
 ```
 1. 点击 "Connect with Investment Advisor"
 2. 观察API调用
-3. 验证跳转到 /jpint
+3. 验证直接跳转到客服链接 (无中间页面)
 ```
 
 查看Console:
 ```
 [StockAnalysis] Tracking data sent: conversion {...}
 [StockAnalysis] Customer service info received: {...}
-[StockAnalysis] Redirecting to jpint with customer service info
+[StockAnalysis] Redirecting directly to customer service: https://...
 ```
 
 #### 6️⃣ 检查数据存储
